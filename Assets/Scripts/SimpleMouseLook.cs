@@ -1,18 +1,16 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SimpleMouseLook : MonoBehaviour
 {
     public float mouseSensitivity = 200f;
     float xRotation = 0f;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
     void Update()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -20,6 +18,8 @@ public class SimpleMouseLook : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -80f, 80f);
 
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.parent.Rotate(Vector3.up * mouseX);
+
+        if (transform.parent != null)
+            transform.parent.Rotate(Vector3.up * mouseX);
     }
 }

@@ -36,7 +36,8 @@ public class MainMenuController : MonoBehaviour
 
     // Empezar simulacion completa
     public void StartSimulation()
-    {
+    {   
+        SimulationManager.fullSimulation = true;
         sceneLoader.LoadScene(2); // Recepcion
     }
 

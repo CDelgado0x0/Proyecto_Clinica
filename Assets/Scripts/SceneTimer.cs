@@ -1,18 +1,41 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class SceneTimer : MonoBehaviour
 {
-    public float sceneDuration = 10f;   // tiempo editable
-    public int nextSceneIndex = 0;      // escena a cargar después
+    [Header("Scene Timing")]
+    public float sceneDuration = 10f;
+    public int nextSceneIndex = 0;
+
+    private bool hasLoadedNextScene = false;
 
     void Start()
     {
-        Invoke(nameof(LoadNextScene), sceneDuration);
+        StartCoroutine(SceneCountdown());
     }
 
-    void LoadNextScene()
+    IEnumerator SceneCountdown()
     {
-        SceneLoader loader = FindFirstObjectByType<SceneLoader>();
-        loader.LoadScene(nextSceneIndex);
+        yield return new WaitForSeconds(sceneDuration);
+        LoadNextScene();
+    }
+
+    public void LoadNextScene()
+    {
+        if (hasLoadedNextScene) return;
+
+        hasLoadedNextScene = true;
+
+        // Si estamos en simulación completa
+        if (SimulationManager.fullSimulation)
+        {
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            // Si es una escena individual, volver al menú
+            SceneManager.LoadScene(1);
+        }
     }
 }
