@@ -3,9 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public void LoadScene(string sceneName)
+    //En un button, se le pasa el num de la escena segun el build settings
+
+    public void LoadScene(int sceneIndex)
     {
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene(sceneIndex);
     }
 
     public void QuitGame()
