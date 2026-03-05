@@ -35,6 +35,7 @@ public class SceneTimer : MonoBehaviour
         else
         {
             // Si es una escena individual, volver al menú
+            SimulationManager.fullSimulation = false;
             SceneManager.LoadScene(1);
         }
     }

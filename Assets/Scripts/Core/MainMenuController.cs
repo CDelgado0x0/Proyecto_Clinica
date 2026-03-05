@@ -10,6 +10,12 @@ public class MainMenuController : MonoBehaviour
 
     public UISequentialAppear scenarioButtons;
 
+    void Start()
+    {
+        Debug.Log("Simulación completa: false");
+        SimulationManager.fullSimulation = false;
+    }
+
     // Abrir seleccion de escenario
     public void OpenScenarioSelection()
     {
@@ -29,6 +35,7 @@ public class MainMenuController : MonoBehaviour
     // Volver al menú principal
     public void BackToMainMenu()
     {
+        Debug.Log("Vover al menú principal");
         mainMenuPanel.SetActive(true);
         selectScenarioPanel.SetActive(false);
         settingsPanel.SetActive(false);
@@ -37,6 +44,7 @@ public class MainMenuController : MonoBehaviour
     // Empezar simulacion completa
     public void StartSimulation()
     {   
+        Debug.Log("Simulación completa: true");
         SimulationManager.fullSimulation = true;
         sceneLoader.LoadScene(2); // Recepcion
     }
