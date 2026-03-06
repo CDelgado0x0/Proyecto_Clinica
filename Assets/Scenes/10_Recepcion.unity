@@ -3398,7 +3398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 211e52854597c384db9042c23f181f4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneTimer
-  sceneDuration: 5
+  sceneDuration: 30
   nextSceneIndex: 3
 --- !u!1001 &1649483748
 PrefabInstance:
