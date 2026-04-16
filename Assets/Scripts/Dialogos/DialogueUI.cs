@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class DialogueUI : MonoBehaviour, IPointerClickHandler
 {
     public TextMeshProUGUI dialogueText;
+    public TextMeshProUGUI nameText; // Esto para el nombre del personaje
     private DialogueManager manager;
 
     void Start()
@@ -16,6 +17,11 @@ public class DialogueUI : MonoBehaviour, IPointerClickHandler
     public void SetText(string text)
     {
         dialogueText.text = text;
+    }
+
+    public void SetName(string name)
+    {
+        nameText.text = name;
     }
 
     public void Show()

@@ -8,14 +8,17 @@ public class DialogueManager : MonoBehaviour
 
     public DialogueUI dialogueUI;
 
+    public AudioSource audioSource;
+
     private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>(); // Cola de lineas
 
     private Queue<string> pageQueue = new Queue<string>();
-    public int maxCharactersPerPage = 120; // ajustable
+    public int maxCharactersPerPage = 120; // Editar en el Inspector
+
+    private DialogueData currentDialogue;
 
     private bool isDialogueActive = false;
 
-    // Typewriterz
     private Coroutine typingCoroutine;
     private bool isTyping = false;
     private string currentLine;
@@ -25,17 +28,18 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
     }
 
-    // 👉 Iniciar diálogo
+    // Iniciar dialogo
     public void StartDialogue(DialogueData dialogue)
     {
         linesQueue.Clear();
 
         foreach (DialogueLine line in dialogue.lines)
         {
-            linesQueue.Enqueue(line);
+            linesQueue.Enqueue(line); // Añade cada linea a la cola
         }
+        currentDialogue = dialogue;
 
-        dialogueUI.Show();
+        dialogueUI.Show(); // Mostrar panel
 
         isDialogueActive = true;
         ShowNextLine();
@@ -46,13 +50,19 @@ public class DialogueManager : MonoBehaviour
     {
         if (!isDialogueActive) return;
 
+        //----------------------------------------------------------------------
+        /*
+        if (audioSource.isPlaying)          //Bloquea avanzar si el audio sigue sonando
+        return;*/
+        //----------------------------------------------------------------------
+
         ShowNextLine();
     }
 
     // Mostrar siguiente línea
     void ShowNextLine()
     {
-        // 👉 Si está escribiendo → completar texto
+        // Si el texto aun se esta escribiendo, mostrar completo al clickar
         if (isTyping)
         {
             StopCoroutine(typingCoroutine);
@@ -61,7 +71,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // 👉 Si hay páginas pendientes → mostrar siguiente
+        // Si hay paginas pendientes muestra la siguiente
         if (pageQueue.Count > 0)
         {
             currentLine = pageQueue.Dequeue();
@@ -69,25 +79,41 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // 👉 Si no hay más líneas → terminar
+        // Si no hay mas lineas termina
         if (linesQueue.Count == 0)
         {
             EndDialogue();
             return;
         }
 
-        // 👉 Nueva línea → dividir en páginas
+        // Dividir la nueva linea
         DialogueLine line = linesQueue.Dequeue();
+
+        string nameToShow = line.characterName; // Nombre del personaje
+
+        if (string.IsNullOrEmpty(nameToShow))
+        {
+            nameToShow = currentDialogue.defaultCharacterName;
+        }
+
+        dialogueUI.SetName(nameToShow);
+
+        if (line.voiceClip != null)
+        {
+            audioSource.Stop();
+            audioSource.clip = line.voiceClip;
+            audioSource.Play();
+        }
 
         List<string> pages = SplitTextIntoPages(line.text);
 
         pageQueue = new Queue<string>(pages);
 
         currentLine = pageQueue.Dequeue();
-        typingCoroutine = StartCoroutine(TypeLine(currentLine));
+        typingCoroutine = StartCoroutine(TypeLine(currentLine)); // Empezar efecto maquina de escribir
     }
 
-    // Efecto máquina de escribir
+    // Efecto maquina de escribir
     IEnumerator TypeLine(string text)
     {
         isTyping = true;
@@ -96,13 +122,13 @@ public class DialogueManager : MonoBehaviour
         foreach (char c in text)
         {
             dialogueUI.SetText(dialogueUI.dialogueText.text + c);
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.03f); // Tiempo de espera entre cada letra
         }
 
         isTyping = false;
     }
 
-    // Finalizar diálogo
+    // Finalizar dialogo
     void EndDialogue()
     {
         isDialogueActive = false;
