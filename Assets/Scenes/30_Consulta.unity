@@ -2810,7 +2810,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1260762789}
-  - component: {fileID: 1260762788}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -2818,20 +2817,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1260762788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1260762787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 211e52854597c384db9042c23f181f4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneTimer
-  sceneDuration: 100
-  nextSceneIndex: 1
 --- !u!4 &1260762789
 Transform:
   m_ObjectHideFlags: 0
@@ -3467,7 +3452,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1260762788}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SceneTimer, Assembly-CSharp
         m_MethodName: LoadNextScene
         m_Mode: 1
