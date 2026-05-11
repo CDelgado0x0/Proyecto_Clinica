@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class UIInteraction : MonoBehaviour
 {
@@ -48,6 +49,7 @@ public class UIInteraction : MonoBehaviour
     [Space(10)]
 
     [SerializeField] private TMP_Text metricsPathText;
+    [SerializeField] private Button saveMetricsButton;
 
     [Space(10)]
 
@@ -96,6 +98,7 @@ public class UIInteraction : MonoBehaviour
         selectSceneBackButton.onClick.AddListener(OnSelectSceneBackButton);
         playButton.onClick.AddListener(OnPlayButton);
         quitButton.onClick.AddListener(OnQuitButton);
+        saveMetricsButton.onClick.AddListener(OnExportButton);
 
         dialogFontSizeSlider.onValueChanged.AddListener(value =>
         {
@@ -164,5 +167,21 @@ public class UIInteraction : MonoBehaviour
     private void OnQuitButton()
     {
         Application.Quit();
+    }
+
+    public void OnExportButton()
+    {
+        string path = SettingsManager.Instance.MetricsPath;
+
+        if (!File.Exists(path))
+        {
+            Debug.LogWarning("No hay métricas guardadas todavía.");
+            return;
+        }
+
+        new NativeShare()
+            .SetSubject("Métricas del juego")
+            .AddFile(path)
+            .Share();
     }
 }
