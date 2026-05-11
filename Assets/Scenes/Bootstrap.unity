@@ -151,6 +151,7 @@ MonoBehaviour:
   settingsManagerPrefab: {fileID: 4845178195192338311, guid: 0cc7e5576c266df4cb6823a8e32841f8, type: 3}
   audioManagerPrefab: {fileID: 2249128509245064876, guid: 27391f6bce225a9438cc7eaf0b9c77eb, type: 3}
   brightnessOverlayPrefab: {fileID: 6020034286721332602, guid: 058e49aa506989d4294ecf9288fc89bd, type: 3}
+  metricsManagerPrefab: {fileID: 1641440543858527827, guid: 440feab9da96a034ab57c0fbef802a6a, type: 3}
   gameManagerPrefab: {fileID: 7229836770689328563, guid: e839579773fa9c34d83ac0f94185ec05, type: 3}
 --- !u!4 &900855398
 Transform:

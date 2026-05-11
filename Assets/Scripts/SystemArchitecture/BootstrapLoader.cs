@@ -6,6 +6,7 @@ public class BootstrapLoader : MonoBehaviour
     [SerializeField] private GameObject settingsManagerPrefab;
     [SerializeField] private GameObject audioManagerPrefab;
     [SerializeField] private GameObject brightnessOverlayPrefab;
+    [SerializeField] private GameObject metricsManagerPrefab;
     [SerializeField] private GameObject gameManagerPrefab;
 
     private void Awake()
@@ -13,6 +14,7 @@ public class BootstrapLoader : MonoBehaviour
         Instantiate(brightnessOverlayPrefab);
         Instantiate(settingsManagerPrefab);
         Instantiate(audioManagerPrefab);
+        Instantiate(metricsManagerPrefab);
         Instantiate(gameManagerPrefab);
     }
 

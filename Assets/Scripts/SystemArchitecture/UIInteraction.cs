@@ -6,6 +6,15 @@ using System.IO;
 
 public class UIInteraction : MonoBehaviour
 {
+    [Header("LogInPanel")]
+
+    [Space(10)]
+
+    [SerializeField] private GameObject logInPanel;
+    [SerializeField] private TMP_InputField usernameInput;
+    [SerializeField] private Button acceptButton;
+    [SerializeField] private TMP_Text errorText;
+
     [Header("MainMenuPanel")]
 
     [Space(10)]
@@ -82,6 +91,9 @@ public class UIInteraction : MonoBehaviour
         dialogFontSizeSlider.value = s.dialogFontSize;
         sampleText.fontSize = s.dialogFontSize;
         brightnessSlider.value = s.brightness;
+
+        errorText.gameObject.SetActive(false);
+        acceptButton.onClick.AddListener(OnAcceptButton);
 
         UpdateSceneDurationButtons(s.sceneDuration);
     }
@@ -169,9 +181,25 @@ public class UIInteraction : MonoBehaviour
         Application.Quit();
     }
 
+    private void OnAcceptButton()
+    {
+        string pseudonym = usernameInput.text.Trim();
+
+        if (string.IsNullOrEmpty(pseudonym))
+        {
+            errorText.text = "Introduce un pseudónimo para continuar.";
+            errorText.gameObject.SetActive(true);
+            return;
+        }
+
+        MetricsManager.Instance.StartSession(pseudonym);
+        logInPanel.SetActive(false);
+        menuPanel.SetActive(true);
+    }
+
     public void OnExportButton()
     {
-        string path = SettingsManager.Instance.MetricsPath;
+        string path = MetricsManager.Instance.MetricsFilePath;
 
         if (!File.Exists(path))
         {

@@ -16,8 +16,8 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager Instance { get; private set; }
     public SettingsData CurrentSettings { get; private set; }
-    private string SavePath => Application.persistentDataPath + "/settings.json"; //Guarda la configuración de los ajustes de la aplicación
-    public string MetricsPath => Application.persistentDataPath + "/metrics.json"; //Guarda las métricas de juego recogidas durante la partida
+    private string SavePath => Path.Combine(Application.persistentDataPath, "settings.json"); //Guarda la configuración de los ajustes de la aplicación
+    public string MetricsPath => Path.Combine(Application.persistentDataPath, "metrics"); //Guarda las métricas de juego recogidas durante la partida
 
     private readonly float[] sceneDurations = { 120f, 300f, 600f }; //Guarda las posibles duraciones de la escena
 
@@ -31,6 +31,12 @@ public class SettingsManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        if (!Directory.Exists(MetricsPath))
+        {
+            Directory.CreateDirectory(MetricsPath);
+        }
+        
         CurrentSettings = LoadSettings();
         ApplySettings();
     }
