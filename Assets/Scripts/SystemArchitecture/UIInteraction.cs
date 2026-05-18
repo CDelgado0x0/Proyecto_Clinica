@@ -59,6 +59,9 @@ public class UIInteraction : MonoBehaviour
     [Space(10)]
 
     [SerializeField] private TMP_Text metricsPathText;
+    [SerializeField] private Button displayAllPathPanel;
+    [SerializeField] private TMP_Text completePathText;
+    [SerializeField] private Button showMetricsPathButton;
     [SerializeField] private Button saveMetricsButton;
 
     [Space(10)]
@@ -113,6 +116,8 @@ public class UIInteraction : MonoBehaviour
         quitButton.onClick.AddListener(OnQuitButton);
         saveMetricsButton.onClick.AddListener(OnExportButton);
         logOutButton.onClick.AddListener(OnLogOutButton);
+        showMetricsPathButton.onClick.AddListener(ShowMetricsButton);
+        displayAllPathPanel.onClick.AddListener(HideMetricsButton);
 
         dialogFontSizeSlider.onValueChanged.AddListener(value =>
         {
@@ -134,9 +139,12 @@ public class UIInteraction : MonoBehaviour
         }
     }
 
-    private void ShowMetricsPath()
+    private void ShowMetricsPath() //Se llama en el start
     {
-        metricsPathText.text = SettingsManager.Instance.MetricsPath;
+        string path = SettingsManager.Instance.MetricsPath;
+        metricsPathText.text = path;
+        completePathText.text = path;
+        displayAllPathPanel.gameObject.SetActive(false);
     }
 
     private void UpdateSceneDurationButtons(int activeIndex)
@@ -195,7 +203,7 @@ public class UIInteraction : MonoBehaviour
 
         if (string.IsNullOrEmpty(pseudonym))
         {
-            errorText.text = "Introduce un pseudónimo para continuar.";
+            errorText.text = "INTRODUCE UN PSEUDONIMO PARA CONTINUAR.";
             errorText.gameObject.SetActive(true);
             return;
         }
@@ -219,5 +227,15 @@ public class UIInteraction : MonoBehaviour
             .SetSubject("Métricas del juego")
             .AddFile(path)
             .Share();
+    }
+
+    private void ShowMetricsButton()
+    {
+        displayAllPathPanel.gameObject.SetActive(true);
+    }
+
+    private void HideMetricsButton()
+    {
+        displayAllPathPanel.gameObject.SetActive(false);
     }
 }
