@@ -14,6 +14,7 @@ public class UIInteraction : MonoBehaviour
     [SerializeField] private TMP_InputField usernameInput;
     [SerializeField] private Button acceptButton;
     [SerializeField] private TMP_Text errorText;
+    [SerializeField] private Button quitButton;
 
     [Header("MainMenuPanel")]
 
@@ -26,7 +27,7 @@ public class UIInteraction : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button selectSceneButton;
     [SerializeField] private Button playButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] private Button logOutButton;
 
 
     [Header("SettingsPanel")]
@@ -111,6 +112,7 @@ public class UIInteraction : MonoBehaviour
         playButton.onClick.AddListener(OnPlayButton);
         quitButton.onClick.AddListener(OnQuitButton);
         saveMetricsButton.onClick.AddListener(OnExportButton);
+        logOutButton.onClick.AddListener(OnLogOutButton);
 
         dialogFontSizeSlider.onValueChanged.AddListener(value =>
         {
@@ -169,6 +171,12 @@ public class UIInteraction : MonoBehaviour
     {
         menuPanel.SetActive(true);
         selectScenePanel.SetActive(false);
+    }
+
+    private void OnLogOutButton()
+    {
+        menuPanel.SetActive(false);
+        logInPanel.SetActive(true);
     }
 
     private void OnPlayButton()
