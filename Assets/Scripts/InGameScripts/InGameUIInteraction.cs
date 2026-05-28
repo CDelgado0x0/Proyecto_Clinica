@@ -1,0 +1,126 @@
+using System.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
+{
+    [Header("Escenas")]
+
+    [Space(10)]
+
+    [SerializeField] private string previousScene;
+    [SerializeField] private string nextScene;
+
+    [Header("DialogPanel")]
+
+    [Space(10)]
+
+    [SerializeField] private GameObject dialogPanel;
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] public TMP_Text dialogueText;
+    [SerializeField] private AudioSource audioSource;
+
+    [Header("RegularButtons")]
+
+    [Space(10)]
+
+    [SerializeField] private Button returnButton;
+    [SerializeField] private Button nextButton;
+
+    [Header("SAAC")]
+
+    [Space(10)]
+
+    [SerializeField] private Button sadButton;
+    [SerializeField] private Button normalButton;
+    [SerializeField] private Button happyButton;
+
+    private StringBuilder sb = new StringBuilder();
+
+    private void Start()
+    {
+        dialogPanel.gameObject.SetActive(false);
+        SubscribeListeners();
+    }
+
+    private void SubscribeListeners()
+    {
+        returnButton.onClick.AddListener(OnReturnButton);
+        nextButton.onClick.AddListener(OnNextButton);
+    }
+
+    private void OnEnable()
+    {
+        SettingsManager.OnFontSizeChanged += UpdateFontSize;
+        UpdateFontSize(SettingsManager.Instance.CurrentSettings.dialogFontSize);
+    }
+
+    private void OnDisable()
+    {
+        SettingsManager.OnFontSizeChanged -= UpdateFontSize;
+    }
+
+    private void UpdateFontSize(float value)
+    {
+        dialogueText.fontSize = value;
+    }
+
+    public void SetText(string text)
+    {
+        sb.Clear();
+        sb.Append(text);
+        dialogueText.text = text;
+    }
+
+    public void AppendChar(char c)
+    {
+        sb.Append(c);
+        dialogueText.text = sb.ToString();
+    }
+
+    public void SetName(string name)
+    {
+        nameText.text = name;
+    }
+
+    public void PlayVoice(AudioClip clip)
+    {
+        audioSource.Stop();
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
+
+    public void Show()
+    {
+        dialogPanel.gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        dialogPanel.gameObject.SetActive(false);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        DialogueManager.Instance.OnUserNext();
+    }
+
+
+
+
+
+    //A partir de aqui comienzan las interacciones de los botones de la funcion SuscribeListeners
+
+    private void OnReturnButton()
+    {
+        SceneManager.LoadScene(previousScene);
+    }
+
+    private void OnNextButton()
+    {
+        SceneManager.LoadScene(nextScene);
+    }
+}

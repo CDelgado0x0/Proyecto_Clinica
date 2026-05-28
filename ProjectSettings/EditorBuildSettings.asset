@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Reception.unity
     guid: 2f9c8c6e8c7629b408ca3d9f916d4a15
   - enabled: 1
-    path: Assets/Scenes/20_SalaEspera.unity
+    path: Assets/Scenes/SalaEspera.unity
     guid: 4f24f9e9d7334a24688615053a66af10
   - enabled: 1
     path: Assets/Scenes/30_Consulta.unity

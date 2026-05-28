@@ -20,8 +20,14 @@ MonoBehaviour:
   - characterName: 
     text: "Esto es una prueba de di\xE1logo, por lo que este texto va a ser largo.
       Soy un doctor muy amable ni\xF1o, tan solo te voy a pegar con el martillo,
-      a ver si tienes reflejos."
+      a ver si tienes reflejos. Esto es una prueba de di\xE1logo, por lo que este
+      texto va a ser largo. Soy un doctor muy amable ni\xF1o, tan solo te voy a pegar
+      con el martillo, a ver si tienes reflejos."
     voiceClip: {fileID: 8300000, guid: bf815da132500014291130156cf406ae, type: 3}
   - characterName: 
-    text: Buenas noches.
+    text: Recapitulemos vale? Solo sobrepasa el dialogo una liea por abajo, por los
+      laterales queda fit. Y esa linea final da igual como sea el texto que si es
+      largo va a estarRecapitulemos vale? Solo sobrepasa el dialogo una liea por
+      abajo, por los laterales queda fit. Y esa linea final da igual como sea el
+      texto que si es largo va a estar
     voiceClip: {fileID: 8300000, guid: 23d8f88bd088fb742afb0e232085ae23, type: 3}

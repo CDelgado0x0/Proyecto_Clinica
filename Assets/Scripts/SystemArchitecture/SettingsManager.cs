@@ -22,6 +22,8 @@ public class SettingsManager : MonoBehaviour
 
     private readonly float[] sceneDurations = { 120f, 300f, 600f }; //Guarda las posibles duraciones de la escena
 
+    public static event System.Action<float> OnFontSizeChanged;
+
     private void Awake()
     {
         if (Instance != null)
@@ -94,6 +96,7 @@ public class SettingsManager : MonoBehaviour
     public void SetDialogFontSize(float value)
     {
         CurrentSettings.dialogFontSize = value;
+        OnFontSizeChanged?.Invoke(value);
     }
 
     public void SetBrightness(float value)

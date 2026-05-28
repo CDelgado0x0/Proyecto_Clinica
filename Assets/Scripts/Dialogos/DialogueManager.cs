@@ -6,7 +6,7 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
-    [SerializeField] private DialogueUI dialogueUI;
+    [SerializeField] private InGameUIInteraction dialogueUI;
     [SerializeField] private float typingSpeed = 0.03f;
     public int maxCharactersPerPage = 120;
 
