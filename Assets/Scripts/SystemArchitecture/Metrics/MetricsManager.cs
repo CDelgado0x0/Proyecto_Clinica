@@ -16,6 +16,17 @@ public class MetricsManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    #if UNITY_EDITOR
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void AutoInitialize()
+        {
+            if (Instance != null) return; // ya existe, no hace nada
+
+            GameObject obj = new GameObject("MetricsManager_Auto");
+            obj.AddComponent<MetricsManager>();
+        }
+    #endif
+
     public void StartSession(string pseudonym)
     {
         Current = new MetricsData

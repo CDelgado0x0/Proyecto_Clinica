@@ -4,74 +4,67 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance;
+    public static DialogueManager Instance { get; private set; }
 
-    public DialogueUI dialogueUI;
+    [SerializeField] private DialogueUI dialogueUI;
+    [SerializeField] private float typingSpeed = 0.03f;
+    public int maxCharactersPerPage = 120;
 
-    public AudioSource audioSource;
-
-    private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>(); // Cola de lineas
-
+    private Queue<DialogueLine> linesQueue = new Queue<DialogueLine>();
     private Queue<string> pageQueue = new Queue<string>();
-    public int maxCharactersPerPage = 120; // Editar en el Inspector
-
     private DialogueData currentDialogue;
-
-    private bool isDialogueActive = false;
-
     private Coroutine typingCoroutine;
-    private bool isTyping = false;
+    private WaitForSeconds typingDelay;
     private string currentLine;
+    private bool isDialogueActive;
+    private bool isTyping;
 
-    void Awake()
+    private void Awake()
     {
+        if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
+        typingDelay = new WaitForSeconds(typingSpeed);
     }
 
-    // Iniciar dialogo
+    // ── API pública ───────────────────────────────────────────
+
     public void StartDialogue(DialogueData dialogue)
     {
         linesQueue.Clear();
+        pageQueue.Clear();
 
         foreach (DialogueLine line in dialogue.lines)
-        {
-            linesQueue.Enqueue(line); // Añade cada linea a la cola
-        }
+            linesQueue.Enqueue(line);
+
         currentDialogue = dialogue;
-
-        dialogueUI.Show(); // Mostrar panel
-
         isDialogueActive = true;
+
+        dialogueUI.Show();
         ShowNextLine();
     }
 
-    // Llamado desde el click/tap del panel
     public void OnUserNext()
     {
         if (!isDialogueActive) return;
-
-        //----------------------------------------------------------------------
-        /*
-        if (audioSource.isPlaying)          //Bloquea avanzar si el audio sigue sonando
-        return;*/
-        //----------------------------------------------------------------------
-
         ShowNextLine();
     }
 
-    // Mostrar siguiente línea
-    void ShowNextLine()
+    // ── Lógica interna ────────────────────────────────────────
+
+    private void ShowNextLine()
     {
-        // Si el texto aun se esta escribiendo, mostrar completo al clickar
+        // Si está escribiendo, muestra la línea completa al instante
         if (isTyping)
         {
-            StopCoroutine(typingCoroutine);
+            if (typingCoroutine != null)
+                StopCoroutine(typingCoroutine);
+
             dialogueUI.SetText(currentLine);
             isTyping = false;
             return;
         }
 
-        // Si hay paginas pendientes muestra la siguiente
+        // Si hay páginas pendientes de la línea actual
         if (pageQueue.Count > 0)
         {
             currentLine = pageQueue.Dequeue();
@@ -79,75 +72,72 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Si no hay mas lineas termina
+        // Si no hay más líneas, termina el diálogo
         if (linesQueue.Count == 0)
         {
             EndDialogue();
             return;
         }
 
-        // Dividir la nueva linea
+        // Procesa la siguiente línea
         DialogueLine line = linesQueue.Dequeue();
 
-        string nameToShow = line.characterName; // Nombre del personaje
-
-        if (string.IsNullOrEmpty(nameToShow))
-        {
-            nameToShow = currentDialogue.defaultCharacterName;
-        }
+        string nameToShow = string.IsNullOrEmpty(line.characterName)
+            ? currentDialogue.defaultCharacterName
+            : line.characterName;
 
         dialogueUI.SetName(nameToShow);
 
         if (line.voiceClip != null)
-        {
-            audioSource.Stop();
-            audioSource.clip = line.voiceClip;
-            audioSource.Play();
-        }
+            dialogueUI.PlayVoice(line.voiceClip); // delegamos el audio al DialogueUI
 
         List<string> pages = SplitTextIntoPages(line.text);
-
         pageQueue = new Queue<string>(pages);
 
         currentLine = pageQueue.Dequeue();
-        typingCoroutine = StartCoroutine(TypeLine(currentLine)); // Empezar efecto maquina de escribir
+        typingCoroutine = StartCoroutine(TypeLine(currentLine));
     }
 
-    // Efecto maquina de escribir
-    IEnumerator TypeLine(string text)
+    private IEnumerator TypeLine(string text)
     {
         isTyping = true;
         dialogueUI.SetText("");
 
         foreach (char c in text)
         {
-            dialogueUI.SetText(dialogueUI.dialogueText.text + c);
-            yield return new WaitForSeconds(0.03f); // Tiempo de espera entre cada letra
+            dialogueUI.AppendChar(c); // evita concatenar strings en cada letra
+            yield return typingDelay;
         }
 
         isTyping = false;
     }
 
-    // Finalizar dialogo
-    void EndDialogue()
+    private void EndDialogue()
     {
         isDialogueActive = false;
         dialogueUI.Hide();
     }
 
-    List<string> SplitTextIntoPages(string text)
+    private int GetMaxCharacters()
+    {
+        float fontSize = SettingsManager.Instance.CurrentSettings.dialogFontSize;
+        return Mathf.RoundToInt(maxCharactersPerPage * (24f / fontSize));
+    }
+
+    private List<string> SplitTextIntoPages(string text)
     {
         List<string> pages = new List<string>();
-
         string[] words = text.Split(' ');
         string currentPage = "";
+        int maxChars = GetMaxCharacters();
 
         foreach (string word in words)
         {
-            // +1 por el espacio
-            if (currentPage.Length + word.Length + 1 > maxCharactersPerPage)
+            if (currentPage.Length + word.Length + 1 > maxChars)
             {
-                pages.Add(currentPage.Trim());
+                if (!string.IsNullOrWhiteSpace(currentPage))
+                    pages.Add(currentPage.Trim());
+
                 currentPage = "";
             }
 
@@ -155,9 +145,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         if (!string.IsNullOrWhiteSpace(currentPage))
-        {
             pages.Add(currentPage.Trim());
-        }
 
         return pages;
     }

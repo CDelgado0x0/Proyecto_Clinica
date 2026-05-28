@@ -1,27 +1,45 @@
+using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
 public class DialogueUI : MonoBehaviour, IPointerClickHandler
 {
-    public TextMeshProUGUI dialogueText;
-    public TextMeshProUGUI nameText; // Esto para el nombre del personaje
-    private DialogueManager manager;
+    [SerializeField] public TMP_Text dialogueText;
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private AudioSource audioSource;
 
-    void Start()
+    private StringBuilder sb = new StringBuilder();
+
+    private void Start()
     {
-        gameObject.SetActive(false); // Ocultar panel al inicio
-        manager = DialogueManager.Instance;
+        gameObject.SetActive(false);
     }
 
     public void SetText(string text)
     {
+        sb.Clear();
+        sb.Append(text);
         dialogueText.text = text;
+    }
+
+    public void AppendChar(char c)
+    {
+        sb.Append(c);
+        dialogueText.text = sb.ToString();
     }
 
     public void SetName(string name)
     {
         nameText.text = name;
+    }
+
+    public void PlayVoice(AudioClip clip)
+    {
+        audioSource.Stop();
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     public void Show()
@@ -36,6 +54,6 @@ public class DialogueUI : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        manager.OnUserNext();
+        DialogueManager.Instance.OnUserNext();
     }
 }
