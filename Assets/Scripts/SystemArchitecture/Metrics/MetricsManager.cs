@@ -42,6 +42,18 @@ public class MetricsManager : MonoBehaviour
         SaveMetrics();
     }
 
+    public void RegisterEvent(string description)
+    {
+        MetricEvent newEvent = new MetricEvent
+        {
+            description = description,
+            timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        };
+
+        Current.events.Add(newEvent);
+        SaveMetrics();
+    }
+
     public void SaveMetrics()
     {
         File.WriteAllText(MetricsFilePath, JsonUtility.ToJson(Current, prettyPrint: true));

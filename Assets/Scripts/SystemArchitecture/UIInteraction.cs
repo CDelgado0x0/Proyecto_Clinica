@@ -90,16 +90,21 @@ public class UIInteraction : MonoBehaviour
     {
         SettingsData s = SettingsManager.Instance.CurrentSettings;
 
+        //Cargar los valores del settings data almacenado
         ambientVolumeSlider.value = s.ambientVolume;
         sfxVolumeSlider.value = s.sfxVolume;
         dialogFontSizeSlider.value = s.dialogFontSize;
         sampleText.fontSize = s.dialogFontSize;
         brightnessSlider.value = s.brightness;
-
-        errorText.gameObject.SetActive(false);
-        acceptButton.onClick.AddListener(OnAcceptButton);
-
         UpdateSceneDurationButtons(s.sceneDuration);
+
+        //Al volver al menu principal, si hay un JSON de datos creados no aparecerá de nuevo el panel de log in
+        if (MetricsManager.Instance.Current != null)
+        {
+            logInPanel.SetActive(false);
+            menuPanel.SetActive(true);
+        }
+        errorText.gameObject.SetActive(false);
     }
 
     private void SubscribeListeners()
@@ -107,6 +112,11 @@ public class UIInteraction : MonoBehaviour
         ambientVolumeSlider.onValueChanged.AddListener(SettingsManager.Instance.SetAmbientVolume);
         sfxVolumeSlider.onValueChanged.AddListener(SettingsManager.Instance.SetSfxVolume);
         brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
+        dialogFontSizeSlider.onValueChanged.AddListener(value =>
+        {
+            SettingsManager.Instance.SetDialogFontSize(value);
+            sampleText.fontSize = value;
+        });
 
         settingsBackButton.onClick.AddListener(OnSettingsBackButton);
         settingsButton.onClick.AddListener(OnSettingsButton);
@@ -118,12 +128,7 @@ public class UIInteraction : MonoBehaviour
         logOutButton.onClick.AddListener(OnLogOutButton);
         showMetricsPathButton.onClick.AddListener(ShowMetricsButton);
         displayAllPathPanel.onClick.AddListener(HideMetricsButton);
-
-        dialogFontSizeSlider.onValueChanged.AddListener(value =>
-        {
-            SettingsManager.Instance.SetDialogFontSize(value);
-            sampleText.fontSize = value;
-        });
+        acceptButton.onClick.AddListener(OnAcceptButton);
     }
 
     private void SetupSceneDurationButtons()

@@ -50,6 +50,9 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     {
         returnButton.onClick.AddListener(OnReturnButton);
         nextButton.onClick.AddListener(OnNextButton);
+        sadButton.onClick.AddListener(OnSadButton);
+        normalButton.onClick.AddListener(OnNormalButton);
+        happyButton.onClick.AddListener(OnHappyButton);
     }
 
     private void OnEnable()
@@ -122,5 +125,20 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     private void OnNextButton()
     {
         SceneManager.LoadScene(nextScene);
+    }
+
+    private void OnSadButton()
+    {
+        MetricsManager.Instance.RegisterEvent("El jugador se siente mal");
+    }
+
+    private void OnNormalButton()
+    {
+        MetricsManager.Instance.RegisterEvent("El jugador se siente tranquilo");
+    }
+
+    private void OnHappyButton()
+    {
+        MetricsManager.Instance.RegisterEvent("El jugador se siente alegre");
     }
 }
