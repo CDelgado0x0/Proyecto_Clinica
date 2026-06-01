@@ -39,18 +39,48 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Button normalButton;
     [SerializeField] private Button happyButton;
 
+    [Header("Scene time")]
+
+    [Space(10)]
+
+    [SerializeField] private float sceneTime;
+
     [Header("ExitToMainMenuButton")]
 
     [Space(10)]
 
     [SerializeField] private Button exitToMainButton;
 
+
     private StringBuilder sb = new StringBuilder();
+    private float timer;
+    private bool timerActive = false;
+
 
     private void Start()
     {
         dialogPanel.gameObject.SetActive(false);
         SubscribeListeners();
+
+        if(currentScene == "WaitingRoom")
+        {
+            sceneTime = SettingsManager.Instance.GetSceneDuration();
+        }
+
+        timer = sceneTime;
+        timerActive = true;
+    }
+
+    private void Update()
+    {
+        if (!timerActive) return;
+
+        timer -= Time.deltaTime;
+
+        if (timer <= 0f)
+        {
+            OnNextButton();
+        }
     }
 
     private void SubscribeListeners()
@@ -132,6 +162,8 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
 
     private void OnNextButton()
     {
+        timerActive = false;
+
         if (nextScene == "MainMenu")
         {
             MetricsManager.Instance.EndGameSession(completed: true);

@@ -398,6 +398,10 @@ PrefabInstance:
       value: Consultation
       objectReference: {fileID: 0}
     - target: {fileID: 2806840304400643888, guid: 49a1ad7e1276f0b42940aabdbb4bb4ce, type: 3}
+      propertyPath: sceneTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2806840304400643888, guid: 49a1ad7e1276f0b42940aabdbb4bb4ce, type: 3}
       propertyPath: currentScene
       value: WaitingRoom
       objectReference: {fileID: 0}
