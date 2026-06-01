@@ -11,6 +11,7 @@ public class SettingsData
     public float brightness = 1f;
     public int sceneDuration = 0;
     public int controlMode = 0; // 0 = arrastrar dedo, 1 = giroscopio
+    public float agitationThreshold = 10f;
 }
 
 public class SettingsManager : MonoBehaviour
@@ -103,6 +104,11 @@ public class SettingsManager : MonoBehaviour
     {
         CurrentSettings.brightness = value;
         BrightnessOverlay.Instance.SetBrightness(value);
+    }
+
+    public void SetAgitationThreshold(float value)
+    {
+        CurrentSettings.agitationThreshold = value;
     }
 
     public void SetSceneDuration(int index)

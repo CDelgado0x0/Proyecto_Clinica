@@ -12,6 +12,7 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     [Space(10)]
 
     [SerializeField] private string previousScene;
+    [SerializeField] private string currentScene;
     [SerializeField] private string nextScene;
 
     [Header("DialogPanel")]
@@ -38,6 +39,12 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Button normalButton;
     [SerializeField] private Button happyButton;
 
+    [Header("ExitToMainMenuButton")]
+
+    [Space(10)]
+
+    [SerializeField] private Button exitToMainButton;
+
     private StringBuilder sb = new StringBuilder();
 
     private void Start()
@@ -53,6 +60,7 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
         sadButton.onClick.AddListener(OnSadButton);
         normalButton.onClick.AddListener(OnNormalButton);
         happyButton.onClick.AddListener(OnHappyButton);
+        exitToMainButton.onClick.AddListener(OnExitToMainButton);
     }
 
     private void OnEnable()
@@ -124,6 +132,10 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
 
     private void OnNextButton()
     {
+        if (nextScene == "MainMenu")
+        {
+            MetricsManager.Instance.EndGameSession(completed: true);
+        }
         SceneManager.LoadScene(nextScene);
     }
 
@@ -140,5 +152,11 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     private void OnHappyButton()
     {
         MetricsManager.Instance.RegisterEvent("El jugador se siente alegre");
+    }
+
+    private void OnExitToMainButton()
+    {
+        MetricsManager.Instance.EndGameSession(completed: false, currentScene);
+        SceneManager.LoadScene("MainMenu");
     }
 }

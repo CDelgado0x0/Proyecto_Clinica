@@ -9,6 +9,9 @@ public class MetricsManager : MonoBehaviour
     public MetricsData Current { get; private set; }
     public string MetricsFilePath { get; private set; }
 
+    private string startScene;
+    private float sessionStartTime;
+
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -40,6 +43,43 @@ public class MetricsManager : MonoBehaviour
         MetricsFilePath = Path.Combine(SettingsManager.Instance.MetricsPath, fileName);
 
         SaveMetrics();
+    }
+
+    public void StartGameSession(string sceneName)
+    {
+        startScene = sceneName;
+        sessionStartTime = Time.time;
+    }
+
+    public void EndGameSession(bool completed, string currentScene = "")
+    {
+        float totalTime = Time.time - sessionStartTime;
+        int waitTime = (int)(SettingsManager.Instance.GetSceneDuration() / 60f);
+        string timeFormatted = System.TimeSpan.FromSeconds(totalTime).ToString(@"mm\:ss");
+
+        string summary;
+
+        if (completed)
+        {
+            summary = startScene == "Reception"
+                ? $"El jugador ha elegido el modo completo con un tiempo de espera de {waitTime} minutos y ha completado la aplicación en {timeFormatted}"
+                : $"El jugador ha elegido jugar desde {startScene} con un tiempo de espera de {waitTime} minutos y ha completado la aplicación en {timeFormatted}";
+        }
+        else
+        {
+            summary = $"El jugador ha abandonado la partida en {currentScene} " +
+                      $"habiendo empezado desde {startScene} " +
+                      $"con un tiempo de espera de {waitTime} minutos " +
+                      $"y habiendo tardado {timeFormatted} antes de salir";
+        }
+
+        Current.sessionSummaries.Add(summary);
+        SaveMetrics();
+    }
+
+    public void RegisterAgitation(float value)
+    {
+        RegisterEvent($"Agitacion detectada: {value:F2} grados/frame");
     }
 
     public void RegisterEvent(string description)

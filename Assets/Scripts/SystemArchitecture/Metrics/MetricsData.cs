@@ -7,6 +7,7 @@ public class MetricsData
     public string username;
     public string sessionStart;
     public List<MetricEvent> events = new List<MetricEvent>();
+    public List<string> sessionSummaries = new List<string>();
 }
 
 [System.Serializable]

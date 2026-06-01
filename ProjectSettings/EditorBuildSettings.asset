@@ -15,10 +15,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Reception.unity
     guid: 2f9c8c6e8c7629b408ca3d9f916d4a15
   - enabled: 1
-    path: Assets/Scenes/SalaEspera.unity
+    path: Assets/Scenes/WaitingRoom.unity
     guid: 4f24f9e9d7334a24688615053a66af10
   - enabled: 1
-    path: Assets/Scenes/30_Consulta.unity
+    path: Assets/Scenes/Consultation.unity
     guid: 227b5d17a0291a943ae61af44ea86043
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

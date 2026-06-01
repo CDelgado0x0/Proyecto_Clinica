@@ -66,6 +66,10 @@ public class UIInteraction : MonoBehaviour
 
     [Space(10)]
 
+    [SerializeField] private TMP_InputField agitationThresholdInput;
+
+    [Space(10)]
+
     [SerializeField] private Button settingsBackButton;
 
     [Header("SelectScenePanel")]
@@ -78,12 +82,20 @@ public class UIInteraction : MonoBehaviour
 
     [SerializeField] private Button selectSceneBackButton;
 
+    [Space(10)]
+
+    [SerializeField] private Button receptionButton;
+    [SerializeField] private Button waitingRoomButton;
+    [SerializeField] private Button consultationButton;
+
     private void Start()
     {
         LoadCurrentValues();
         SubscribeListeners();
         SetupSceneDurationButtons();
         ShowMetricsPath();
+
+        agitationThresholdInput.contentType = TMP_InputField.ContentType.DecimalNumber;
     }
 
     private void LoadCurrentValues()
@@ -105,6 +117,8 @@ public class UIInteraction : MonoBehaviour
             menuPanel.SetActive(true);
         }
         errorText.gameObject.SetActive(false);
+
+        agitationThresholdInput.text = SettingsManager.Instance.CurrentSettings.agitationThreshold.ToString();
     }
 
     private void SubscribeListeners()
@@ -118,10 +132,21 @@ public class UIInteraction : MonoBehaviour
             sampleText.fontSize = value;
         });
 
+        agitationThresholdInput.onEndEdit.AddListener(value => // Validar que el valor introducido es un número válido, esta función cambia el umbral con el que se registra el estres a través del movimiento del giroscopio
+        {
+            if (float.TryParse(value, out float result))
+                SettingsManager.Instance.SetAgitationThreshold(result);
+            else
+                agitationThresholdInput.text = SettingsManager.Instance.CurrentSettings.agitationThreshold.ToString();
+        });
+
         settingsBackButton.onClick.AddListener(OnSettingsBackButton);
         settingsButton.onClick.AddListener(OnSettingsButton);
         selectSceneButton.onClick.AddListener(OnSelectSceneButton);
         selectSceneBackButton.onClick.AddListener(OnSelectSceneBackButton);
+        receptionButton.onClick.AddListener(OnReceptionButton);
+        waitingRoomButton.onClick.AddListener(OnWaitingRoomButton);
+        consultationButton.onClick.AddListener(OnConsultationButton);
         playButton.onClick.AddListener(OnPlayButton);
         quitButton.onClick.AddListener(OnQuitButton);
         saveMetricsButton.onClick.AddListener(OnExportButton);
@@ -186,6 +211,24 @@ public class UIInteraction : MonoBehaviour
         selectScenePanel.SetActive(false);
     }
 
+    private void OnReceptionButton()
+    {
+        MetricsManager.Instance.StartGameSession("Reception");
+        SceneManager.LoadScene("Reception");
+    }
+
+    private void OnWaitingRoomButton()
+    {
+        MetricsManager.Instance.StartGameSession("WaitingRoom");
+        SceneManager.LoadScene("WaitingRoom");
+    }
+
+    private void OnConsultationButton()
+    {
+        MetricsManager.Instance.StartGameSession("Consultation");
+        SceneManager.LoadScene("Consultation");
+    }
+
     private void OnLogOutButton()
     {
         menuPanel.SetActive(false);
@@ -194,6 +237,7 @@ public class UIInteraction : MonoBehaviour
 
     private void OnPlayButton()
     {
+        MetricsManager.Instance.StartGameSession("Reception");
         SceneManager.LoadScene("Reception");
     }
 
