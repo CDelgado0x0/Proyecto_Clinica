@@ -90,6 +90,8 @@ public class UIInteraction : MonoBehaviour
 
     private void Start()
     {
+        BrightnessOverlay.Instance.FadeFromBlack(1f);
+
         LoadCurrentValues();
         SubscribeListeners();
         SetupSceneDurationButtons();
@@ -214,19 +216,28 @@ public class UIInteraction : MonoBehaviour
     private void OnReceptionButton()
     {
         MetricsManager.Instance.StartGameSession("Reception");
-        SceneManager.LoadScene("Reception");
+        BrightnessOverlay.Instance.FadeToBlack(1f, () =>
+        {
+            SceneManager.LoadScene("Reception");
+        });
     }
 
     private void OnWaitingRoomButton()
     {
         MetricsManager.Instance.StartGameSession("WaitingRoom");
-        SceneManager.LoadScene("WaitingRoom");
+        BrightnessOverlay.Instance.FadeToBlack(1f, () =>
+        {
+            SceneManager.LoadScene("WaitingRoom");
+        });
     }
 
     private void OnConsultationButton()
     {
         MetricsManager.Instance.StartGameSession("Consultation");
-        SceneManager.LoadScene("Consultation");
+        BrightnessOverlay.Instance.FadeToBlack(1f, () =>
+        {
+            SceneManager.LoadScene("Consultation");
+        });
     }
 
     private void OnLogOutButton()
@@ -238,7 +249,10 @@ public class UIInteraction : MonoBehaviour
     private void OnPlayButton()
     {
         MetricsManager.Instance.StartGameSession("Reception");
-        SceneManager.LoadScene("Reception");
+        BrightnessOverlay.Instance.FadeToBlack(1f, () =>
+        {
+            SceneManager.LoadScene("Reception");
+        });
     }
 
     private void OnQuitButton()

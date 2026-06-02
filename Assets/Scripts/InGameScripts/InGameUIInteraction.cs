@@ -59,6 +59,8 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
+        BrightnessOverlay.Instance.FadeFromBlack(1f);
+
         dialogPanel.gameObject.SetActive(false);
         SubscribeListeners();
 
@@ -168,7 +170,11 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
         {
             MetricsManager.Instance.EndGameSession(completed: true);
         }
-        SceneManager.LoadScene(nextScene);
+
+        BrightnessOverlay.Instance.FadeToBlack(1f, () =>
+        {
+            SceneManager.LoadScene(nextScene);
+        });
     }
 
     private void OnSadButton()
