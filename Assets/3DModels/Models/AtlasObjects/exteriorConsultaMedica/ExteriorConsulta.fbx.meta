@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 053a9edd4aeb24545b9394892a5dbf26
+guid: 1539f538f73356348b2d8ce8a75f004d
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -8,11 +8,11 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Crystal
-    second: {fileID: 2100000, guid: 5e8aab6767793d34ab76d20782e9422e, type: 2}
+    second: {fileID: 2100000, guid: 66205e5aee9505b4c8afa3c72bb27e05, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: WaitingRoom
+      name: ExteriorConsultaa
     second: {fileID: 2100000, guid: 5c7788e7dd76c59439c6e8b2062dd7f6, type: 2}
   materials:
     materialImportMode: 2
@@ -72,9 +72,9 @@ ModelImporter:
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15.000001
+    secondaryUVAreaDistortion: 15
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 1
+    secondaryUVMarginMethod: 0
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
