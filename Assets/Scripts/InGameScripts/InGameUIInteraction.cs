@@ -24,6 +24,7 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     [SerializeField] public TMP_Text dialogueText;
     [SerializeField] private AudioSource audioSource;
 
+
     [Header("RegularButtons")]
 
     [Space(10)]
@@ -162,7 +163,7 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
         SceneManager.LoadScene(previousScene);
     }
 
-    private void OnNextButton()
+    public void OnNextButton()
     {
         timerActive = false;
 
