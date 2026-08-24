@@ -20,9 +20,7 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     [Space(10)]
 
     [SerializeField] private GameObject dialogPanel;
-    [SerializeField] private TMP_Text nameText;
     [SerializeField] public TMP_Text dialogueText;
-    [SerializeField] private AudioSource audioSource;
 
 
     [Header("RegularButtons")]
@@ -62,7 +60,6 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     {
         BrightnessOverlay.Instance.FadeFromBlack(1f);
 
-        dialogPanel.gameObject.SetActive(false);
         SubscribeListeners();
 
         if(currentScene == "WaitingRoom")
@@ -123,18 +120,6 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
     {
         sb.Append(c);
         dialogueText.text = sb.ToString();
-    }
-
-    public void SetName(string name)
-    {
-        nameText.text = name;
-    }
-
-    public void PlayVoice(AudioClip clip)
-    {
-        audioSource.Stop();
-        audioSource.clip = clip;
-        audioSource.Play();
     }
 
     public void Show()

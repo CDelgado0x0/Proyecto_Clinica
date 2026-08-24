@@ -86,11 +86,6 @@ public class DialogueManager : MonoBehaviour
             ? currentDialogue.defaultCharacterName
             : line.characterName;
 
-        dialogueUI.SetName(nameToShow);
-
-        if (line.voiceClip != null)
-            dialogueUI.PlayVoice(line.voiceClip); // delegamos el audio al DialogueUI
-
         List<string> pages = SplitTextIntoPages(line.text);
         pageQueue = new Queue<string>(pages);
 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0c8c8dd999be5234bab72aca24f30d14
+guid: e53f20af576a34646bd87cb4b5cbd511
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,18 +31,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Phase1
-      takeName: Phase1
-      internalID: -7484575142384423553
-      firstFrame: 0
-      lastFrame: 240
+      name: PhaseTrial
+      takeName: PhaseTrial
+      internalID: 6836937441048796628
+      firstFrame: 1080
+      lastFrame: 1280
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -58,7 +58,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1080
     isReadable: 0
   meshes:
     lODScreenPercentages: []

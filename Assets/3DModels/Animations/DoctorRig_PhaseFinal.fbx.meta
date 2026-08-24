@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0c8c8dd999be5234bab72aca24f30d14
+guid: 9d197ccd6d15b214f8d792a793522d16
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Phase1
-      takeName: Phase1
-      internalID: -7484575142384423553
-      firstFrame: 0
-      lastFrame: 240
+      name: PhaseFinal
+      takeName: PhaseFinal
+      internalID: 6308720770524290083
+      firstFrame: 2965
+      lastFrame: 3380
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -58,7 +58,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 2965
     isReadable: 0
   meshes:
     lODScreenPercentages: []

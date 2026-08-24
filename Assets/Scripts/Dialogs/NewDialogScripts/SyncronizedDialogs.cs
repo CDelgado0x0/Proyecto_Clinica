@@ -21,6 +21,9 @@ public class SyncronizedDialogs : MonoBehaviour
     [SerializeField] private Animator doctorAnimator;
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private ScrollRect scrollRect;
+
+    private bool phaseChanged;
 
     private int currentPhase = 0;
 
@@ -35,21 +38,28 @@ public class SyncronizedDialogs : MonoBehaviour
 
         ConsultaPhase phase = phases[index];
 
+        phaseChanged = false;
+
         // Activa la animación correspondiente
         doctorAnimator.SetInteger("phaseIndex", phase.animatorPhaseIndex);
+
+        // Espera un frame para que el Animator procese el cambio
+        yield return null;
+
+        BrightnessOverlay.Instance.FadeFromBlack(1f);
+
+        // Obtiene la duración real de la animación actual
+        float animationDuration = doctorAnimator.GetCurrentAnimatorStateInfo(0).length;
 
         // Muestra el texto con máquina de escribir sincronizada al audio
         audioSource.clip = phase.audio;
         audioSource.Play();
 
-        yield return StartCoroutine(TypeSyncedToAudio(phase.text, phase.audio.length));
+        yield return StartCoroutine(TypeSyncedToAudio(phase.text, animationDuration));
 
-        // Espera a que el audio termine por si el texto acabó antes
-        while (audioSource.isPlaying)
-            yield return null;
-
-        // Fundido a negro, cambia de fase, fundido inverso
-        bool phaseChanged = false;
+        // Espera a que la animación termine completamente
+        yield return StartCoroutine(WaitForAnimationComplete());
+        
         BrightnessOverlay.Instance.FadeToBlack(1f, () => phaseChanged = true);
 
         yield return new WaitUntil(() => phaseChanged);
@@ -58,7 +68,7 @@ public class SyncronizedDialogs : MonoBehaviour
 
         if (currentPhase < phases.Length)
         {
-            BrightnessOverlay.Instance.FadeFromBlack(1f);
+            
             yield return StartCoroutine(RunPhase(currentPhase));
         }
         else
@@ -71,6 +81,8 @@ public class SyncronizedDialogs : MonoBehaviour
     private IEnumerator TypeSyncedToAudio(string text, float audioDuration)
     {
         dialogueText.text = "";
+        Canvas.ForceUpdateCanvases();
+        scrollRect.verticalNormalizedPosition = 1f;
 
         if (audioDuration <= 0 || text.Length == 0) yield break;
 
@@ -92,6 +104,16 @@ public class SyncronizedDialogs : MonoBehaviour
             yield return null;
         }
 
-        dialogueText.text = text;
+        dialogueText.text = text.Substring(0, charsShown);
+        Canvas.ForceUpdateCanvases();
+        scrollRect.verticalNormalizedPosition = 0f; // 0 = abajo del todo
+    }
+
+    private IEnumerator WaitForAnimationComplete()
+    {
+        yield return null;
+
+        while (doctorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+            yield return null;
     }
 }
