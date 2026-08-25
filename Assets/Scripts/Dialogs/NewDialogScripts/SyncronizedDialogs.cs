@@ -82,7 +82,6 @@ public class SyncronizedDialogs : MonoBehaviour
     {
         dialogueText.text = "";
         Canvas.ForceUpdateCanvases();
-        scrollRect.verticalNormalizedPosition = 1f;
 
         if (audioDuration <= 0 || text.Length == 0) yield break;
 
@@ -99,14 +98,13 @@ public class SyncronizedDialogs : MonoBehaviour
             {
                 charsShown = target;
                 dialogueText.text = text.Substring(0, charsShown);
+                Canvas.ForceUpdateCanvases();
+                scrollRect.verticalNormalizedPosition = 0f;
             }
-
             yield return null;
         }
 
         dialogueText.text = text.Substring(0, charsShown);
-        Canvas.ForceUpdateCanvases();
-        scrollRect.verticalNormalizedPosition = 0f; // 0 = abajo del todo
     }
 
     private IEnumerator WaitForAnimationComplete()
