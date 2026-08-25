@@ -15,7 +15,7 @@ public class CameraLook : MonoBehaviour
 
     [Space(10)]
 
-    [SerializeField] private GameObject agitationDetector;
+    //[SerializeField] private GameObject agitationDetector;
 
     private float rotationX; // rotación vertical acumulada
     private float rotationY; // rotación horizontal acumulada
@@ -105,12 +105,12 @@ public class CameraLook : MonoBehaviour
         }
 
         float delta = Quaternion.Angle(gyro.attitude, lastFrameAttitude);
-        agitationDetector.SetActive(false);
+        //agitationDetector.SetActive(false);
 
         if (delta > SettingsManager.Instance.CurrentSettings.agitationThreshold)
         {
             MetricsManager.Instance.RegisterAgitation(delta);
-            agitationDetector.SetActive(true);
+            //agitationDetector.SetActive(true);
         }
 
         lastFrameAttitude = gyro.attitude;
