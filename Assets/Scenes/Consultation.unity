@@ -2085,7 +2085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3079157785683537422, guid: 860529884c12c88419224212d29a47f8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.215
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5356317164161437259, guid: 860529884c12c88419224212d29a47f8, type: 3}
       propertyPath: m_Name
@@ -2203,11 +2203,29 @@ MonoBehaviour:
       \xA1listo! \xA1tu coraz\xF3n y pulmones suenan muy fuertes y sanos!"
     audio: {fileID: 8300000, guid: f53f403db73da4d4a8c4b029d78f566b, type: 3}
     animatorPhaseIndex: 1
+  - text: "Ahora vamos a revisar tus o\xEDdos con el otoscopio. Necesito que te mantengas
+      bien quieto mientras los reviso... \xA1Perfecto! Todo se ve muy bien, est\xE1n
+      limpios y sanos."
+    audio: {fileID: 8300000, guid: 5365d8a6a60425d40a25c9687f9cefe5, type: 3}
+    animatorPhaseIndex: 2
+  - text: "Con este intrumento vamos a medir tu temperatura, es un term\xF3metro
+      digital. Tu temperatura es de 36 grados, lo cual es completamente normal."
+    audio: {fileID: 8300000, guid: 7ef96dde426d1b841925c50a5bbff786, type: 3}
+    animatorPhaseIndex: 3
+  - text: Ahora necesito que vuelvas a mantenerte quieto, vamos a revisar los ganglios
+      de tu gartanta... traga un poco de saliva... Genial, todo se ve muy bien, sin
+      inflamacion.
+    audio: {fileID: 8300000, guid: 3cdb22adb55267d4c84e0a2bcdee2761, type: 3}
+    animatorPhaseIndex: 4
+  - text: Por ultimo vamos a revisar la vision, mirame fijamente.. Tus pupilas reaccionan
+      perfectamente a la luz.
+    audio: {fileID: 8300000, guid: 29565c1fd4eada747a289bb418583690, type: 3}
+    animatorPhaseIndex: 5
   - text: "Ya hemos terminado la revisi\xF3n, tienes una salud excelente. Recuerda
       que es importante mantener una buena alimentaci\xF3n, hacer ejercicio regularmente
       y visitar al doctor para chequeos peri\xF3dicos. \xA1Cu\xEDdate mucho!"
     audio: {fileID: 8300000, guid: 5b08affada5cd2d4e8151cd5d0f9890f, type: 3}
-    animatorPhaseIndex: 2
+    animatorPhaseIndex: 6
   UIManager: {fileID: 2806840305046350219}
   doctorAnimator: {fileID: 152014875}
   dialogueText: {fileID: 1556762805}
@@ -2629,7 +2647,7 @@ MonoBehaviour:
   currentScene: Consultation
   nextScene: MainMenu
   dialogPanel: {fileID: 3846903807408476113}
-  dialogueText: {fileID: 0}
+  dialogueText: {fileID: 1556762805}
   returnButton: {fileID: 82063354514531132}
   nextButton: {fileID: 735641084582828074}
   sadButton: {fileID: 6320841498841789067}
