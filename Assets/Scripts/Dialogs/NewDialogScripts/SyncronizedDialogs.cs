@@ -4,11 +4,19 @@ using UnityEngine.UI;
 using TMPro;
 
 [System.Serializable]
+public class PauseInterval
+{
+    public float start;
+    public float duration;
+}
+
+[System.Serializable]
 public class ConsultaPhase
 {
     public string text;
     public AudioClip audio;
     public int animatorPhaseIndex;
+    public PauseInterval[] pauses;
 }
 
 public class SyncronizedDialogs : MonoBehaviour
@@ -55,7 +63,7 @@ public class SyncronizedDialogs : MonoBehaviour
         audioSource.clip = phase.audio;
         audioSource.Play();
 
-        yield return StartCoroutine(TypeSyncedToAudio(phase.text, animationDuration));
+        yield return StartCoroutine(TypeSyncedToAudio(phase.text, animationDuration, phase.pauses));
 
         // Espera a que la animación termine completamente
         yield return StartCoroutine(WaitForAnimationComplete());
@@ -77,22 +85,47 @@ public class SyncronizedDialogs : MonoBehaviour
             UIManager.OnNextButton();
         }
     }
+    private float GetSpeakingElapsed(float rawTime, PauseInterval[] pauses)
+    {
+        if (pauses == null) return rawTime;
 
-    private IEnumerator TypeSyncedToAudio(string text, float audioDuration)
+        float subtract = 0f;
+        foreach (PauseInterval p in pauses)
+        {
+            if (rawTime > p.start)
+            {
+                float overlapEnd = Mathf.Min(rawTime, p.start + p.duration);
+                subtract += overlapEnd - p.start;
+            }
+        }
+        return rawTime - subtract;
+    }
+
+    private IEnumerator TypeSyncedToAudio(string text, float audioDuration, PauseInterval[] pauses)
     {
         dialogueText.text = "";
         Canvas.ForceUpdateCanvases();
 
         if (audioDuration <= 0 || text.Length == 0) yield break;
 
-        float charsPerSecond = text.Length / audioDuration;
-        float elapsed = 0f;
+        float totalPauseDuration = 0f;
+        if (pauses != null)
+        {
+            foreach (PauseInterval p in pauses) totalPauseDuration += p.duration;
+        }
+        float totalSpeakingDuration = Mathf.Max(0.01f, audioDuration - totalPauseDuration);
+
         int charsShown = 0;
 
         while (charsShown < text.Length)
         {
-            elapsed += Time.deltaTime;
-            int target = Mathf.Min(Mathf.FloorToInt(elapsed * charsPerSecond), text.Length);
+            float rawTime = audioSource.isPlaying ? audioSource.time : audioDuration;
+            float speakingElapsed = GetSpeakingElapsed(rawTime, pauses);
+
+            int target = Mathf.Min(
+                Mathf.FloorToInt((speakingElapsed / totalSpeakingDuration) * text.Length),
+                text.Length
+            );
 
             if (target > charsShown)
             {
@@ -101,6 +134,14 @@ public class SyncronizedDialogs : MonoBehaviour
                 Canvas.ForceUpdateCanvases();
                 scrollRect.verticalNormalizedPosition = 0f;
             }
+
+            if (!audioSource.isPlaying && rawTime >= audioDuration)
+            {
+                charsShown = text.Length;
+                dialogueText.text = text;
+                break;
+            }
+
             yield return null;
         }
 
