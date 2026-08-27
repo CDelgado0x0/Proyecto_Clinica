@@ -68,7 +68,7 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
         }
 
         timer = sceneTime;
-        timerActive = true;
+        timerActive = (currentScene != "Consultation");
     }
 
     private void Update()
