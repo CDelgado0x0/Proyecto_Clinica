@@ -89,6 +89,18 @@ public class CameraLook : MonoBehaviour
         Quaternion correction = Quaternion.Euler(90f, 0f, 0f);
         Quaternion target = correction * gyroRotation;
 
+        // --- Clamp del eje X ---
+        Vector3 targetEuler = target.eulerAngles;
+        float x = targetEuler.x;
+        if (x > 180f) x -= 360f; // pasa de 0..360 a -180..180 para poder clampear bien
+
+        x = Mathf.Clamp(x, -verticalClamp, verticalClamp);
+        targetEuler.x = x;
+        targetEuler.z = 0f; // opcional: evita roll no deseado
+
+        target = Quaternion.Euler(targetEuler);
+        // -----------------------
+
         // Sustituyes la línea anterior por esta
         transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * gyroSensitivity);
     }
