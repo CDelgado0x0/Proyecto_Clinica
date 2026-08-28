@@ -2459,7 +2459,7 @@ MonoBehaviour:
     audio: {fileID: 8300000, guid: 29565c1fd4eada747a289bb418583690, type: 3}
     animatorPhaseIndex: 5
     pauses:
-    - start: 3.8
+    - start: 3.9
       duration: 5.5
   - text: "Ya hemos terminado la revisi\xF3n, tienes una salud excelente. Recuerda
       que es importante mantener una buena alimentaci\xF3n, hacer ejercicio regularmente

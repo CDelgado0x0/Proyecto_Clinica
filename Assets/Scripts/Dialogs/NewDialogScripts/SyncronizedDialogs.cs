@@ -67,16 +67,15 @@ public class SyncronizedDialogs : MonoBehaviour
 
         // Espera a que la animación termine completamente
         yield return StartCoroutine(WaitForAnimationComplete());
-        
-        BrightnessOverlay.Instance.FadeToBlack(1f, () => phaseChanged = true);
-
-        yield return new WaitUntil(() => phaseChanged);
 
         currentPhase++;
 
         if (currentPhase < phases.Length)
         {
-            
+            BrightnessOverlay.Instance.FadeToBlack(1f, () => phaseChanged = true);
+
+            yield return new WaitUntil(() => phaseChanged);
+
             yield return StartCoroutine(RunPhase(currentPhase));
         }
         else
