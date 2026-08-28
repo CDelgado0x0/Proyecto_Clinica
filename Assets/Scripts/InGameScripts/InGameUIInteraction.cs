@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
+public class InGameUIInteraction : MonoBehaviour
 {
     [Header("Escenas")]
 
@@ -19,8 +19,7 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
 
     [Space(10)]
 
-    [SerializeField] private GameObject dialogPanel;
-    [SerializeField] public TMP_Text dialogueText;
+    [SerializeField] private TMP_Text dialogueText;
 
 
     [Header("RegularButtons")]
@@ -50,8 +49,6 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
 
     [SerializeField] private Button exitToMainButton;
 
-
-    private StringBuilder sb = new StringBuilder();
     private float timer;
     private bool timerActive = false;
 
@@ -106,35 +103,10 @@ public class InGameUIInteraction : MonoBehaviour, IPointerClickHandler
 
     private void UpdateFontSize(float value)
     {
-        dialogueText.fontSize = value;
-    }
-
-    public void SetText(string text)
-    {
-        sb.Clear();
-        sb.Append(text);
-        dialogueText.text = text;
-    }
-
-    public void AppendChar(char c)
-    {
-        sb.Append(c);
-        dialogueText.text = sb.ToString();
-    }
-
-    public void Show()
-    {
-        dialogPanel.gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        dialogPanel.gameObject.SetActive(false);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        DialogueManager.Instance.OnUserNext();
+        if (dialogueText != null)
+        {
+            dialogueText.fontSize = value;
+        }
     }
 
 

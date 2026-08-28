@@ -85,7 +85,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3735424600420634550}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LlamadaDePrueba, Assembly-CSharp
         m_MethodName: OnDialogStart
         m_Mode: 1
@@ -810,149 +810,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &3822053121726247612
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7903332439185200565}
-  - component: {fileID: 3735424600420634550}
-  - component: {fileID: 1609405682182469554}
-  m_Layer: 0
-  m_Name: LlamadaDialogoDePrueba
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7903332439185200565
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3822053121726247612}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960.00006, y: -460.5972, z: 0}
-  m_LocalScale: {x: 1.7638954, y: 1.7638954, z: 1.7638954}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3190203296966118628}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3735424600420634550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3822053121726247612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db18e21e3ce5a2541a09ebadfb2ea09e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LlamadaDePrueba
-  textoPrueba: {fileID: 11400000, guid: bf79ec107bbbc7f4b98cc483d50f0f09, type: 2}
---- !u!82 &1609405682182469554
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3822053121726247612}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &3846903808842781034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +999,6 @@ RectTransform:
   - {fileID: 2610526308005085534}
   - {fileID: 2296150477420319076}
   - {fileID: 4272047628888832109}
-  - {fileID: 7903332439185200565}
   - {fileID: 8293793967112876828}
   - {fileID: 1369675866977581762}
   m_Father: {fileID: 0}
@@ -1230,15 +1086,13 @@ MonoBehaviour:
   previousScene: MainMenu
   currentScene: 
   nextScene: SalaEspera
-  dialogPanel: {fileID: 3846903808842781034}
-  nameText: {fileID: 3594577205261954752}
   dialogueText: {fileID: 4954731937124162024}
-  audioSource: {fileID: 1609405682182469554}
   returnButton: {fileID: 82063355076918663}
   nextButton: {fileID: 735641085077603985}
   sadButton: {fileID: 6320841500293262384}
   normalButton: {fileID: 2254622166441769162}
   happyButton: {fileID: 6001866029061548752}
+  sceneTime: 0
   exitToMainButton: {fileID: 5440469063116499945}
 --- !u!1 &4592272758063971755
 GameObject:
