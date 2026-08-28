@@ -50,7 +50,8 @@ MonoBehaviour:
   sfxParam: SFXVolume
   ambientParam: AmbientVolume
   defaultSfxVolume: 0.75
-  defaultAmbientVolume: 0.75
+  defaultAmbientVolume: 0
+  clinicalAmbientVolume: 0.05
 --- !u!82 &-588894899873936681
 AudioSource:
   m_ObjectHideFlags: 0

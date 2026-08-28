@@ -10,10 +10,10 @@ public class BootstrapLoader : MonoBehaviour
 
     private void Awake()
     {
+        Instantiate(audioManagerPrefab);
         Instantiate(brightnessOverlayPrefab);
         Instantiate(settingsManagerPrefab);
         Instantiate(metricsManagerPrefab);
-        Instantiate(audioManagerPrefab);
     }
 
     private void Start()

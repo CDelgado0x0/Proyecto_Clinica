@@ -59,13 +59,24 @@ public class InGameUIInteraction : MonoBehaviour
 
         SubscribeListeners();
 
-        if(currentScene == "WaitingRoom")
+        
+
+        if (currentScene == "WaitingRoom")
         {
             sceneTime = SettingsManager.Instance.GetSceneDuration();
+            timer = sceneTime;
+            timerActive = true;
         }
-
-        timer = sceneTime;
-        timerActive = (currentScene != "Consultation");
+        else if (currentScene == "Consultation")
+        {
+            AudioManager.Instance.SetClinicalAmbientVolume();
+            timerActive = false;
+        }
+        else
+        {
+            timer = sceneTime;
+            timerActive = true;
+        }
     }
 
     private void Update()
@@ -126,6 +137,7 @@ public class InGameUIInteraction : MonoBehaviour
 
         if (nextScene == "MainMenu")
         {
+            AudioManager.Instance.SetNormalAmbientVolume();
             MetricsManager.Instance.EndGameSession(completed: true);
         }
 
@@ -152,6 +164,7 @@ public class InGameUIInteraction : MonoBehaviour
 
     private void OnExitToMainButton()
     {
+        AudioManager.Instance.SetNormalAmbientVolume();
         MetricsManager.Instance.EndGameSession(completed: false, currentScene);
         SceneManager.LoadScene("MainMenu");
     }

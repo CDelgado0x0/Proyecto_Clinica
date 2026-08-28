@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
+// Se ejecuta ANTES que SettingsManager (que usa el orden por defecto, 0)
+// para garantizar que AudioManager.Instance ya exista cuando
+// SettingsManager.Awake() llame a ApplySettings().
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
@@ -15,10 +18,14 @@ public class AudioManager : MonoBehaviour
 
     [Header("Valores por defecto (0 a 1)")]
     [SerializeField] private float defaultSfxVolume = 0.75f;
-    [SerializeField] private float defaultAmbientVolume = 0.75f;
+    [SerializeField] private float defaultAmbientVolume = 0f;
+    [SerializeField] private float clinicalAmbientVolume = 0f;
 
-    private const string SFX_KEY = "SFXVolume";
-    private const string AMBIENT_KEY = "AmbientVolume";
+    // AudioManager ya NO persiste nada. SettingsManager (settings.json)
+    // es la única fuente de verdad; aquí solo cacheamos en memoria
+    // el último valor aplicado, para poder devolverlo con los getters.
+    private float currentSfxVolume;
+    private float currentAmbientVolume;
 
     private void Awake()
     {
@@ -27,28 +34,22 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        LoadAndApplyVolumes();
-    }
-
-    private void LoadAndApplyVolumes()
-    {
-        float sfxVolume = PlayerPrefs.GetFloat(SFX_KEY, defaultSfxVolume);
-        float ambientVolume = PlayerPrefs.GetFloat(AMBIENT_KEY, defaultAmbientVolume);
-
-        ApplySfxVolume(sfxVolume);
-        ApplyAmbientVolume(ambientVolume);
+        // Valor provisional hasta que SettingsManager (si existe) aplique
+        // los valores reales cargados desde settings.json.
+        currentSfxVolume = defaultSfxVolume;
+        currentAmbientVolume = defaultAmbientVolume;
+        //ApplySfxVolume(currentSfxVolume);
+        //ApplyAmbientVolume(currentAmbientVolume);
     }
 
     // ---------- SFX ----------
     public void SetSfxVolume(float linearValue)
     {
+        currentSfxVolume = linearValue;
         ApplySfxVolume(linearValue);
-        PlayerPrefs.SetFloat(SFX_KEY, linearValue);
-        PlayerPrefs.Save();
     }
 
     private void ApplySfxVolume(float linearValue)
@@ -59,27 +60,43 @@ public class AudioManager : MonoBehaviour
 
     public float GetSfxVolume()
     {
-        return PlayerPrefs.GetFloat(SFX_KEY, defaultSfxVolume);
+        return currentSfxVolume;
     }
 
     // ---------- Ambiente ----------
     public void SetAmbientVolume(float linearValue)
     {
+        currentAmbientVolume = linearValue;
         ApplyAmbientVolume(linearValue);
-        PlayerPrefs.SetFloat(AMBIENT_KEY, linearValue);
-        PlayerPrefs.Save();
     }
 
     private void ApplyAmbientVolume(float linearValue)
     {
         float dB = LinearToDecibel(linearValue);
         ambientMixer.SetFloat(ambientParam, dB);
+        Debug.Log($"Ambient Volume set to {linearValue} (dB: {dB})");
     }
 
     public float GetAmbientVolume()
     {
-        return PlayerPrefs.GetFloat(AMBIENT_KEY, defaultAmbientVolume);
+        return currentAmbientVolume;
     }
+
+
+    //Cambiar los valores dentro de la clinica
+
+    public void SetClinicalAmbientVolume()
+    {
+        float dB = LinearToDecibel(clinicalAmbientVolume);
+        ambientMixer.SetFloat(ambientParam, dB);
+    }
+
+    public void SetNormalAmbientVolume()
+    {
+        float dB = LinearToDecibel(currentAmbientVolume);
+        ambientMixer.SetFloat(ambientParam, dB);
+    }
+
 
     // ---------- Utilidad ----------
     private float LinearToDecibel(float value)

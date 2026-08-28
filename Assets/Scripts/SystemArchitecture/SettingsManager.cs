@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
 public class SettingsData
@@ -45,6 +46,7 @@ public class SettingsManager : MonoBehaviour
         ApplySettings();
     }
 
+    /*
     #if UNITY_EDITOR //Esto sirve para crearlo en caso de que haciendo pruebas no se lance la aplicación desde el bootstrap, sino desde una escena del juego. No hace falta que el script esté asociado a ningun gameobject de la escena.
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void AutoInitialize()
@@ -55,6 +57,7 @@ public class SettingsManager : MonoBehaviour
             obj.AddComponent<SettingsManager>();
         }
     #endif
+    */
 
     private SettingsData LoadSettings()  //Si existe un JSON lo lee y devuelve sus valores, de lo contrario crea uno y devuelve valores default
     {
@@ -85,13 +88,15 @@ public class SettingsManager : MonoBehaviour
 
     public void SetAmbientVolume(float value)
     {
+        Debug.Log($"Ambient volume set to {value}");
         CurrentSettings.ambientVolume = value;
-        // Notificar al audioManager!!
+        AudioManager.Instance.SetAmbientVolume(value);
     }
 
     public void SetSfxVolume(float value)
     {
         CurrentSettings.sfxVolume = value;
+        AudioManager.Instance?.SetSfxVolume(value);
     }
 
     public void SetDialogFontSize(float value)
@@ -103,7 +108,7 @@ public class SettingsManager : MonoBehaviour
     public void SetBrightness(float value)
     {
         CurrentSettings.brightness = value;
-        BrightnessOverlay.Instance.SetBrightness(value);
+        BrightnessOverlay.Instance?.SetBrightness(value);
     }
 
     public void SetAgitationThreshold(float value)

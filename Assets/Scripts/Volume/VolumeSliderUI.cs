@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class VolumeSliderUI : MonoBehaviour
+public class VolumeSliderUI : MonoBehaviour, IPointerUpHandler
 {
     public enum VolumeType { SFX, Ambient }
 
@@ -10,25 +11,37 @@ public class VolumeSliderUI : MonoBehaviour
 
     private void Start()
     {
+        if (SettingsManager.Instance == null || slider == null) return;
+
         float currentValue = volumeType == VolumeType.SFX
-            ? AudioManager.Instance.GetSfxVolume()
-            : AudioManager.Instance.GetAmbientVolume();
+            ? SettingsManager.Instance.CurrentSettings.sfxVolume
+            : SettingsManager.Instance.CurrentSettings.ambientVolume;
 
         slider.SetValueWithoutNotify(currentValue);
-
         slider.onValueChanged.AddListener(OnSliderChanged);
     }
 
+    // Se llama en cada frame mientras se arrastra: solo aplica el volumen
+    // en memoria (mixer), sin tocar el disco.
     private void OnSliderChanged(float value)
     {
+        if (SettingsManager.Instance == null) return;
+
         if (volumeType == VolumeType.SFX)
-            AudioManager.Instance.SetSfxVolume(value);
+            SettingsManager.Instance.SetSfxVolume(value);
         else
-            AudioManager.Instance.SetAmbientVolume(value);
+            SettingsManager.Instance.SetAmbientVolume(value);
+    }
+
+    // Se llama una única vez al soltar el dedo/ratón: aquí sí persistimos a disco.
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        SettingsManager.Instance?.SaveSettings();
     }
 
     private void OnDestroy()
     {
-        slider.onValueChanged.RemoveListener(OnSliderChanged);
+        if (slider != null)
+            slider.onValueChanged.RemoveListener(OnSliderChanged);
     }
 }
