@@ -88,6 +88,13 @@ public class UIInteraction : MonoBehaviour
     [SerializeField] private Button waitingRoomButton;
     [SerializeField] private Button consultationButton;
 
+    [Header("ToggleImageButton")]
+
+    [Space(10)]
+
+    [SerializeField] private Button toggleImageButton;
+    [SerializeField] private GameObject imageToToggle;
+
     private void Start()
     {
         BrightnessOverlay.Instance.FadeFromBlack(1f);
@@ -98,6 +105,8 @@ public class UIInteraction : MonoBehaviour
         ShowMetricsPath();
 
         agitationThresholdInput.contentType = TMP_InputField.ContentType.DecimalNumber;
+
+        imageToToggle.SetActive(false);
     }
 
     private void LoadCurrentValues()
@@ -156,6 +165,7 @@ public class UIInteraction : MonoBehaviour
         showMetricsPathButton.onClick.AddListener(ShowMetricsButton);
         displayAllPathPanel.onClick.AddListener(HideMetricsButton);
         acceptButton.onClick.AddListener(OnAcceptButton);
+        toggleImageButton.onClick.AddListener(OnToggleImageButton);
     }
 
     private void SetupSceneDurationButtons()
@@ -300,5 +310,10 @@ public class UIInteraction : MonoBehaviour
     private void HideMetricsButton()
     {
         displayAllPathPanel.gameObject.SetActive(false);
+    }
+
+    private void OnToggleImageButton()
+    {
+        imageToToggle.SetActive(!imageToToggle.activeSelf);
     }
 }

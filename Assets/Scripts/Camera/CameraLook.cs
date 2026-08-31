@@ -127,9 +127,4 @@ public class CameraLook : MonoBehaviour
 
         lastFrameAttitude = gyro.attitude;
     }
-
-    public void ChangeCameraInput()
-    {
-        SettingsManager.Instance.CurrentSettings.controlMode = SettingsManager.Instance.CurrentSettings.controlMode == 0 ? 1 : 0;
-    }
 }

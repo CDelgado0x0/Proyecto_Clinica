@@ -26,6 +26,8 @@ public class SettingsManager : MonoBehaviour
 
     public static event System.Action<float> OnFontSizeChanged;
 
+    public static event System.Action<int> OnControlModeChanged;
+
     private void Awake()
     {
         if (Instance != null)
@@ -41,7 +43,7 @@ public class SettingsManager : MonoBehaviour
         {
             Directory.CreateDirectory(MetricsPath);
         }
-        
+
         CurrentSettings = LoadSettings();
         ApplySettings();
     }
@@ -124,5 +126,18 @@ public class SettingsManager : MonoBehaviour
     public float GetSceneDuration()
     {
         return sceneDurations[CurrentSettings.sceneDuration];
+    }
+
+    //Botones del giroscopio
+
+    public void SetControlMode(int mode)
+    {
+        CurrentSettings.controlMode = mode;
+        OnControlModeChanged?.Invoke(mode);
+    }
+
+    public void ToggleControlMode()
+    {
+        SetControlMode(CurrentSettings.controlMode == 0 ? 1 : 0);
     }
 }
